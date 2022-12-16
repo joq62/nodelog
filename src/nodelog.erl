@@ -15,7 +15,7 @@
 
 
 %% --------------------------------------------------------------------
--define(SERVER,?MODULE).
+-define(SERVER,nodelog_server).
 
 
 %% External exports
