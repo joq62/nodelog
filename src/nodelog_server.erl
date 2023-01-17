@@ -91,7 +91,7 @@ handle_call({config,LogFile},_From, State) ->
 			  NewState=State,
 			  {error,["Error when creating LogFile :",Reason,?MODULE,?LINE]};
 		      ok->
-			  NewState={log_file=LogFile},
+			  NewState=State#state{log_file=LogFile},
 			  ok
 		  end;
 	      _->
