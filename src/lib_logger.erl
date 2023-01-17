@@ -40,12 +40,13 @@ log(alert,ModuleString,Line,Msg)->
 %% --------------------------------------------------------------------
 %create_logger(LogDir)->
 create_logger(LogFile)->
- %   {VmId,_HostId}=misc_node:vmid_hostid(node()),    
-  %  LogFile=filename:join(LogDir,VmId++".log"),
-    ok=logger:add_handler(my_standar_disk_h, logger_std_h,
+    Result=case logger:add_handler(my_standar_disk_h, logger_std_h,
 			  #{formatter => {logger_formatter,
-					  #{ template => [time," | ", file," | ",line," | ",level," | ",msg,"\n"]}}}),
-    ok=logger:add_handler(my_disk_log_h, logger_disk_log_h,
+					  #{ template => [time," | ", file," | ",line," | ",level," | ",msg,"\n"]}}}) of
+	       {error,Reason}->
+		   {error,["Error when creating LogFile :",Reason,?MODULE,?LINE]};
+	       ok->
+		   case logger:add_handler(my_disk_log_h, logger_disk_log_h,
 			  #{
 			    config => #{file => LogFile,
 					type => wrap,
@@ -53,8 +54,14 @@ create_logger(LogFile)->
 					max_no_bytes =>1000*100,
 					filesync_repeat_interval => 1000},
 			    formatter => {logger_formatter,
-					  #{ template => [time," | ", file," | ",line," | ",level," | ",msg,"\n"]}}}),
-    ok.
+					  #{ template => [time," | ", file," | ",line," | ",level," | ",msg,"\n"]}}}) of
+		       {error,Reason}->
+			   {error,["Error when creating LogFile :",Reason,?MODULE,?LINE]};
+		       ok-> 
+			   ok
+		   end
+	   end,
+    Result.
 
 %% --------------------------------------------------------------------
 %% Function:start/0 

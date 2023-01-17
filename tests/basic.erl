@@ -50,7 +50,8 @@ create_test()->
     ok=file:make_dir("test_log_dir"),
     ok=file:make_dir("test_log_dir/logs"),
     LogFile1=filename:join(["test_log_dir","logs","test1.logs"]),
-    ok=rpc:call(node(),nodelog,create,[LogFile1],5000),
+    ok=rpc:call(node(),nodelog,config,[LogFile1],5000),
+    ok=rpc:call(node(),nodelog,config,[LogFile1],5000),
 
     io:format("Stop OK !!! ~p~n",[{?MODULE,?FUNCTION_NAME}]),
     ok.

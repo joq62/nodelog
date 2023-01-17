@@ -31,7 +31,8 @@
 -record(state, {
 		notice=[],
 		warning=[],
-		alert=[]
+		alert=[],
+		log_file
 	
 	       }).
 
@@ -82,6 +83,23 @@ init([]) ->
 %%          {stop, Reason, Reply, State}   | (terminate/2 is called)
 %%          {stop, Reason, State}            (terminate/2 is called)
 %% --------------------------------------------------------------------
+handle_call({config,LogFile},_From, State) ->
+    Reply=case State#state.log_file of 
+	      undefined->
+		  case lib_logger:create_logger(LogFile) of
+		      {error,Reason}->
+			  NewState=State,
+			  {error,["Error when creating LogFile :",Reason,?MODULE,?LINE]};
+		      ok->
+			  NewState={log_file=LogFile},
+			  ok
+		  end;
+	      _->
+		  NewState=State,
+		  {error,["Error LogFile Already configured:",LogFile,?MODULE,?LINE]}
+	  end,	  		      
+    {reply, Reply, NewState};
+
 
 handle_call({read,notice},_From, State) ->
     Reply=State#state.notice,

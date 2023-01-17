@@ -20,6 +20,7 @@
 
 %% External exports
 -export([
+	 config/1,
 	 read/1,
 	 log/4,
 	 create/1,
@@ -45,6 +46,10 @@
 %% @returns:State#state.service_specs_info
 %%
 %%---------------------------------------------------------------
+config(LogFile)->
+    gen_server:call(?SERVER, {config,LogFile},infinity).
+
+
 read(LogLevel)->
     gen_server:call(?SERVER, {read,LogLevel},infinity).
 
