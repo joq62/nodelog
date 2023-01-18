@@ -46,6 +46,9 @@
 %% @returns:State#state.service_specs_info
 %%
 %%---------------------------------------------------------------
+is_config()->
+    gen_server:call(?SERVER, {is_config},infinity).
+
 config(LogFile)->
     gen_server:call(?SERVER, {config,LogFile},infinity).
 
