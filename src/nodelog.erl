@@ -20,6 +20,7 @@
 
 %% External exports
 -export([
+	 is_config/0,
 	 config/1,
 	 read/1,
 	 log/4,
