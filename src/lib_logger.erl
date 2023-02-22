@@ -12,6 +12,7 @@
 -module(lib_logger).   
  
 -export([
+	 parse/1,
 	 log/4,
 	 create_logger/1
 	]).
@@ -20,6 +21,29 @@
 %% Include files
 %% --------------------------------------------------------------------
 -include_lib("kernel/include/logger.hrl").
+
+%%--------------------------------------------------------------------
+%% @doc
+%% @spec
+%% @end
+%%--------------------------------------------------------------------
+% {erlang:system_time(microsecond),ModuleString,Line,MsgAsString}
+parse(ListRaw)->
+    [parse_item(Item)||Item<-ListRaw].
+
+parse_item({SysTime,ModuleStr,Line,MsgAsString})->
+    TimeUnit=microsecond,
+    {{Y,M,D},{H,Mi,S}}=calendar:system_time_to_local_time(SysTime, TimeUnit),
+    Year=integer_to_list(Y),
+    Month=integer_to_list(M),
+    Day=integer_to_list(D),
+    Hour=integer_to_list(H),
+    Min=integer_to_list(Mi),
+    Sec=integer_to_list(S),
+    LineStr=integer_to_list(Line),
+    DateTime=Year++"-"++Month++"-"++Day++" | "++Hour++":"++Min++":"++Sec++" | ",
+    Text=DateTime++ModuleStr++"-"++LineStr++"=>"++MsgAsString,
+    Text.
 %% --------------------------------------------------------------------
 %% Function: available_hosts()
 %% Description: Based on hosts.config file checks which hosts are avaible

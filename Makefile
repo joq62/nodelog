@@ -6,6 +6,7 @@ all:
 	rm -rf *.dir;
 	rm -f rebar.lock;
 	rm -rf common resource_discovery nodelog;
+	rm -rf test_log_dir;
 #	tests 
 	mkdir tests_ebin;
 	erlc -I include -o tests_ebin tests/*.erl;
@@ -52,7 +53,8 @@ eunit:
 	rm -rf Mnesia.*;
 	rm -rf *.dir;
 	rm -f rebar.lock;
-	rm -rf common resource_discovery nodelog;
+	rm -rf common nodelog;
+	rm -rf test_log_dir;
 #	tests 
 	mkdir tests_ebin;
 	erlc -I include -o tests_ebin tests/*.erl;

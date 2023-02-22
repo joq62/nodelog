@@ -51,7 +51,7 @@ start([_Args])->
 setup()->
     io:format("Start ~p~n",[{?MODULE,?FUNCTION_NAME}]),
   
-    ok=application:start(tests),
+    ok=application:start(nodelog),
     pong=nodelog:ping(),
     io:format("Stop OK !!! ~p~n",[{?MODULE,?FUNCTION_NAME}]),
 

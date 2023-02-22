@@ -22,6 +22,7 @@
 -export([
 	 is_config/0,
 	 config/1,
+	 raw/1,
 	 read/1,
 	 log/4,
 	 create/1,
@@ -53,6 +54,9 @@ is_config()->
 config(LogFile)->
     gen_server:call(?SERVER, {config,LogFile},infinity).
 
+
+raw(LogLevel)->
+    gen_server:call(?SERVER, {raw,LogLevel},infinity).
 
 read(LogLevel)->
     gen_server:call(?SERVER, {read,LogLevel},infinity).

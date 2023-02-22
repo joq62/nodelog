@@ -111,22 +111,6 @@ handle_call({config,LogFile},_From, State) ->
     {reply, Reply, NewState};
 
 
-handle_call({read,Level},_From, State) ->
-    Reply = case Level of
-		debug->
-		    lib_logger:parse(State#state.debug);
-		notice->
-		    lib_logger:parse(State#state.notice);
-		warning->
-		    lib_logger:parse(State#state.warning);
-		alert->
-		    lib_logger:parse(State#state.alert);
-		Unmatched->
-		    {error,["Unmatched level ",Unmatched,?MODULE,?LINE]}
-	    end,
-    
-    {reply, Reply, State};
-
 handle_call({raw,Level},_From, State) ->
     Reply = case Level of
 		debug->
@@ -138,8 +122,29 @@ handle_call({raw,Level},_From, State) ->
 		alert->
 		    State#state.alert;
 		Unmatched->
-		    {error,["Unmatched level ",Unmatched,?MODULE,?LINE]}
+		    {error,["Unmatched level ",Level,?MODULE,?LINE]}
 	    end,
+    
+    {reply, Reply, State};
+
+handle_call({read,Level},_From, State) ->
+    RawInfo = case Level of
+		debug->
+		    State#state.debug;
+		notice->
+		    State#state.notice;
+		warning->
+		    State#state.warning;
+		alert->
+		    State#state.alert;
+		Unmatched->
+		    {error,["Unmatched level ",Level,?MODULE,?LINE]}
+	    end,
+   Reply= case RawInfo of
+	      {error,Info}->
+		  RawInfo;
+	      _->
+		  
     
     {reply, Reply, State};
 
