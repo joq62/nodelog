@@ -42,7 +42,7 @@ parse_item({SysTime,ModuleStr,Line,MsgAsString})->
     Sec=integer_to_list(S),
     LineStr=integer_to_list(Line),
     DateTime=Year++"-"++Month++"-"++Day++" | "++Hour++":"++Min++":"++Sec++" | ",
-    Text=DateTime++ModuleStr++"/ "++LineStr++" | "++MsgAsString,
+    Text=DateTime++ModuleStr++"/"++LineStr++" Msg= "++MsgAsString,
     Text.
 %% --------------------------------------------------------------------
 %% Function: available_hosts()
